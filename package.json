@@ -1,0 +1,16 @@
+{
+  "name": "dev-tinder-backend",
+  "version": "1.0.0",
+  "description": "",
+  "license": "ISC",
+  "author": "Amal kr",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+   "start":"node src/app.js",
+   "dev":"nodemon src/app.js"
+  },
+  "dependencies": {
+    "express": "^4.21.2"
+  }
+}
