@@ -40,9 +40,20 @@ const userSchema = mongoose.Schema({
             values:["male","female","other"],
             message:`{VALUE} is not a valid gender type`
         }
+    },
+    photoUrl:{
+        type:String,
+        default:"https://www.pngkit.com/png/detail/204-2043505_male-icon-1stacy-dreher2017-08-01t16-cartoon.png"
+    },
+    about:{
+        type:String,
+        default:"This is a new User"
+    },
+    skills:{
+        type:[String]
     }
 
-})
+},{timestamps:true})
 
 
 userSchema.methods.getJWT = async function(){
