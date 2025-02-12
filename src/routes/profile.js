@@ -10,7 +10,7 @@ profileRouter.get("/profile/view",userAuth,(req,res)=>{
       const user = req.user
       res.send(user)
     } catch (error) {
-      res.status(400).send("ERROR :"+error.message)
+      res.status(401).send("ERROR :"+error.message)
     }
       
   })
@@ -27,8 +27,8 @@ profileRouter.get("/profile/view",userAuth,(req,res)=>{
         const loggedInUser = req.user
         Object.keys(req.body).forEach((key)=>( loggedInUser[key] = req.body[key]))
         await loggedInUser.save()
-
-        res.json({message:`${loggedInUser.firstName} , Your Profile Updated Successfully....!!!!`,data:loggedInUser})
+        console.log(loggedInUser)
+        res.status(200).json({message:`${loggedInUser.firstName} , Your Profile Updated Successfully....!!!!`,data:loggedInUser})
 
 
 

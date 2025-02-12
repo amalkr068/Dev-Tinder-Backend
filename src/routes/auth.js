@@ -23,8 +23,15 @@ authRouter.post("/signup",async (req,res)=>{
             age:age
         })
 
-        await newUser.save()
-        res.send("Data added successfully....!!!!")
+       const savedUser = await newUser.save()
+
+       const token = await savedUser.getJWT()
+       const expirationDate = new Date();
+       expirationDate.setTime(expirationDate.getTime() + (7 * 24 * 60 * 60 * 1000)); // 7 days
+     
+       res.cookie("token",token,{ expires: expirationDate})
+
+        res.json({message:"Data added successfully....!!!!", data:savedUser})
 
     } catch (error) {
         console.log(error)
@@ -59,7 +66,7 @@ authRouter.post("/login",async(req,res)=>{
             expirationDate.setTime(expirationDate.getTime() + (7 * 24 * 60 * 60 * 1000)); // 7 days
           
             res.cookie("token",token,{ expires: expirationDate})
-            res.send("Log in Successful....!!!")
+            res.json({message:"Successful...",user})
 
         }else {
             throw new Error("Password is not Correct")

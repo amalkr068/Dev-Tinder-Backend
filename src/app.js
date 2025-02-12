@@ -2,6 +2,7 @@ const express = require('express')
 const app = express()
 const connectDB = require("../src/config/database")
 const User = require("../src/models/user")
+const cors = require("cors")
 
 
 const JWT = require("jsonwebtoken")
@@ -17,6 +18,21 @@ const userRouter = require("./routes/user")
 
 app.use(express.json())
 app.use(cookieParser())
+app.use(cors({
+   origin: "http://localhost:5173",  // Your frontend's origin
+   methods: ['GET', 'POST', 'PATCH', 'DELETE'],  // Make sure PATCH is included
+   allowedHeaders: ['Content-Type', 'Authorization'],
+   credentials: true  // Allow credentials (cookies)
+}));
+app.options('*', cors());
+app.options('/profile/edit', (req, res) => {
+   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PATCH, DELETE');
+   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+   res.setHeader('Access-Control-Allow-Origin', 'http://localhost:5173');
+   res.setHeader('Access-Control-Allow-Credentials', 'true');
+   res.sendStatus(204); // No content for OPTIONS request
+ });
+ 
 
 
 app.use("/",authRouter)
