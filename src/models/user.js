@@ -51,6 +51,14 @@ const userSchema = mongoose.Schema({
     },
     skills:{
         type:[String]
+    },
+    isAdmin:{
+        type:String,
+        default:false
+    },
+    isBlocked:{
+        type:String,
+        default:false
     }
 
 },{timestamps:true})

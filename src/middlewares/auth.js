@@ -37,5 +37,39 @@ const userAuth = async (req,res,next)=>{
 }
 
 
+const adminAuth = async (req,res,next)=>{
 
-module.exports = { userAuth }
+    try {
+        
+        const { token } = req.cookies
+        if(!token){
+            throw new Error("Token is not available")
+        }
+
+       const decodeObj =  await JWT.verify(token,"DevTinderAdmin@123")
+
+        const { _id } = decodeObj
+        const user = await User.findOne({_id:_id,isAdmin:true})
+        
+        if(!user){
+            throw new Error("Admin not found with this Token")
+        }
+
+        req.admin = user
+        next()
+
+
+
+
+    } catch (error) {
+        res.status(400).send("Error :"+error)
+    }
+
+
+
+
+
+}
+
+
+module.exports = { userAuth,adminAuth }

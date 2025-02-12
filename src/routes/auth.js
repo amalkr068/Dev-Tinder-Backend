@@ -11,7 +11,7 @@ authRouter.post("/signup",async (req,res)=>{
 
         validateSignUpData(req)
 
-        const { firstName,lastName,emailId,password,gender,age } = req.body
+        const { firstName,lastName,emailId,password,gender,age,photoUrl } = req.body
         const passwordHash = await bcrypt.hash(password,10)
 
         const newUser = new User({
@@ -20,7 +20,8 @@ authRouter.post("/signup",async (req,res)=>{
             emailId:emailId,
             password:passwordHash,
             gender:gender,
-            age:age
+            age:age,
+            photoUrl:photoUrl
         })
 
        const savedUser = await newUser.save()
@@ -56,7 +57,10 @@ authRouter.post("/login",async(req,res)=>{
         if(!user){
             throw new Error("User Not Found")
         }
-    
+        
+        if(user.isBlocked == "true"){
+            throw new Error("User is Blocked")
+        }
         const isPasswordValid = await user.validatePassword(password)
     
         if(isPasswordValid){
